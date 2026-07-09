@@ -13,11 +13,18 @@ const Header = () => {
 
   return (
     <>
-      <nav className="navbar row sticky-top">
+      <nav className="navbar row sticky-top app-navbar">
         {/* logo */}
         <div className="col-12 col-md-3">
           <Link to="/">
-            <img src="/images/logo.webp" alt="logo" className="logo" />
+            <img
+              src="/images/logo_n.jpeg"
+              alt="DOOD logo"
+              className="logo"
+              onError={(event) => {
+                event.currentTarget.src = "/images/logo.webp";
+              }}
+            />
           </Link>
         </div>
 

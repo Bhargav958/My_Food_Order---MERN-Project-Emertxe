@@ -49,24 +49,36 @@ const Home = () => {
         <Message variant="danger">{restaurantsError}</Message>
       ) : (
         <>
-          <section>
+          <section className="home-section">
+            <div className="hero-section">
+              <h1>🍔 <span>Delicious Food</span> Delivered Fast</h1>
+              <p>Order from your favorite restaurants in minutes.</p>
+            </div>
+
             {/* SORT BUTTONS */}
             <div className="sort">
-              <button className="sort_veg p-3" onClick={handleToggleVegOnly}>
-                {showVegOnly ? "Show All" : "Pure Veg"}
+              <button
+                className={`sort_veg filter-chip${showVegOnly ? " active" : ""}`}
+                onClick={handleToggleVegOnly}
+              >
+                {showVegOnly ? "🍽 Show All" : "🍃 Veg"}
               </button>
 
-              <button className="sort_rev p-3" onClick={handleSortByReviews}>
-                Sort By Reviews
+              <button className="sort_rev filter-chip" onClick={handleSortByReviews}>
+                🔥 Popular
               </button>
 
-              <button className="sort_rate p-3" onClick={handleSortByRatings}>
-                Sort By Ratings
+              <button className="sort_rate filter-chip" onClick={handleSortByRatings}>
+                ⭐ Top Rated
+              </button>
+
+              <button className="filter-chip" type="button">
+                💰 Budget
               </button>
             </div>
 
             {/* RESTAURANTS */}
-          <div className="row mt-4">
+          <div className="row mt-4 restaurant-list">
     {restaurants?.filter((restaurant) => !showVegOnly || restaurant.isVeg).length > 0 ? (
     restaurants
       .filter((restaurant) => !showVegOnly || restaurant.isVeg)

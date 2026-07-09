@@ -2,19 +2,45 @@ html,
 body {
   font-family: "Amazon Ember";
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   margin: 0px;
   padding: 0px;
   overflow-x: hidden;
-  background-image:
-    linear-gradient(
-      0deg,
-      rgba(250, 250, 250, 0.801),
-      rgba(250, 250, 250, 0.836)
-    ),
-    url("/images/flat-lay-green-vegetables-fruits.jpg");
+  color: #1f1f1f;
+  background: #1f1f1f;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+body::before {
+  background-image: url("/images/backy.jpeg");
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  filter: blur(8px);
+  opacity: 0.1;
+  transform: scale(1.06);
+  z-index: -2;
+}
+
+body::after {
+  background: rgba(0, 0, 0, 0.35);
+  z-index: -1;
+}
+
+.App {
+  min-height: 100vh;
+  position: relative;
+}
+
+.container-fluids {
+  padding-top: 1.5rem;
 }
 
 /* Scroll Bar */
@@ -38,39 +64,55 @@ body {
 /* Nav */
 
 .logo {
-  width: 40%;
-  margin-left: 20%;
+  width: 132px;
+  height: 78px;
+  margin-left: 12%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
 }
 
 nav {
-   background-color: #056a3a;
-  padding: 1rem 1rem;
+  background-color: #0f5132;
+  padding: 0.75rem 1.25rem;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+}
+
+.app-navbar {
+  align-items: center;
 }
 
 .web_logo {
   padding: 1rem;
-  color: #000;
+  color: #ffffff;
   font-size: 30px;
-  
- 
 }
 
 #search_btn {
-  margin-left: -100%;
+  height: 48px;
+  width: 52px;
+  margin-left: 0;
+  border-radius: 0 24px 24px 0;
+  background: #ff6b00;
+  color: #ffffff;
+  border: none;
 }
 
 .input-group {
-  width: 90%;
-  margin-right: 35%;
+  width: 100%;
+  margin-right: 0;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+  border-radius: 24px;
+  overflow: hidden;
 }
 
 #search_field {
-  height: 2.4rem;
-  padding: 1rem;
-  border-radius: 1rem;
+  height: 48px;
+  padding: 0.75rem 1.15rem;
+  border: none;
+  border-radius: 24px 0 0 24px;
 }
 
 #login_btn {
@@ -93,16 +135,16 @@ nav {
 }
 
 #cart {
-  font-size: 2rem;
+  font-size: 1.45rem;
   font-family: calibri;
   color: white;
 }
 
 #cart_count {
-  background-color: rgb(243, 235, 223);
+  background-color: #ff6b00;
   padding: 0.2rem 0.5rem;
   border-radius: 0.2rem;
-  color: rgb(2, 2, 2);
+  color: #ffffff;
   font-weight: bold;
   font-size: 0.9rem;
 }
@@ -111,6 +153,40 @@ nav {
 
 #foodItems_heading {
   margin-top: 1rem;
+}
+
+.home-section {
+  padding-bottom: 2rem;
+}
+
+.hero-section {
+  margin: 0 auto 1.5rem;
+  padding: 2.5rem 1rem 1.5rem;
+  text-align: center;
+  color: #ffffff;
+}
+
+.hero-section h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 900;
+  letter-spacing: 0;
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+}
+
+.hero-section h1 span {
+  color: #ff6b00;
+}
+
+.hero-section p {
+  margin: 0.7rem 0 0;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.restaurant-list {
+  row-gap: 0.75rem;
 }
 
 .food-image {
@@ -122,23 +198,79 @@ nav {
 .restaurant-card {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 24px;
   align-items: center;
-
   width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.restaurant-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.24);
+}
+
+.restaurant-image-link {
+  display: block;
+  flex: 0 0 auto;
 }
 
 .restaurant-image {
-  width: 220px;
-  height: 180px;
+  width: 160px;
+  height: 120px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 16px 8px 8px 16px;
 }
 
 .restaurant-info {
   flex: 1;
+}
+
+.restaurant-name {
+  margin-bottom: 0.45rem;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #1f1f1f;
+}
+
+.restaurant-meta,
+.restaurant-delivery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.55rem;
+  align-items: center;
+  color: #575757;
+  font-size: 0.95rem;
+}
+
+.restaurant-delivery {
+  margin-top: 0.35rem;
+}
+
+.meta-separator {
+  color: rgba(31, 31, 31, 0.35);
+  font-weight: 700;
+}
+
+.rating-pill {
+  color: #1f1f1f;
+  font-weight: 800;
+}
+
+.delivery-time {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.delivery-fee {
+  color: #575757;
+  font-weight: 600;
 }
 .ai-status {
   display: inline-block;
@@ -193,12 +325,13 @@ nav {
 .ai-btn {
   margin-top: 10px;
   border: none;
-  background: #078347;
+  background: #ff6b00;
   color: white;
   padding: 8px 14px;
-  border-radius: 6px;
+  border-radius: 999px;
   cursor: pointer;
   width: fit-content;
+  font-weight: 700;
 }
 
 .ai-btn:hover {
@@ -208,7 +341,7 @@ nav {
 .ai-insights-box {
   margin-top: 12px;
   padding: 10px;
- background: #f8fffa;
+  background: #f8fffa;
   border: 1px solid #ddd;
   border-left: 5px solid #28a745;
   border-radius: 8px;
@@ -934,9 +1067,10 @@ ul.CTAs a {
 }
 
 .rest_address {
-  color: rgba(128, 128, 128, 0.723);
+  margin: 0.45rem 0 0;
+  color: rgba(31, 31, 31, 0.68);
   text-align: justify;
-  font-size: small;
+  font-size: 0.92rem;
 }
 .rest_distance {
   color: rgba(128, 128, 128, 0.723);
@@ -1067,12 +1201,72 @@ ul.CTAs a {
   background-color: transparent;
 }
 .sort {
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
 }
 .sort_rate:focus,
 .sort_rev:focus,
 .sort_veg:focus {
-  color: grey;
   border: none;
   outline: none;
+}
+
+.filter-chip {
+  min-height: 42px;
+  padding: 0.55rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #1f1f1f;
+  font-weight: 800;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.filter-chip.active {
+  background: #ff6b00;
+  color: #ffffff;
+  border-color: #ff6b00;
+}
+
+.filter-chip:hover,
+.filter-chip:focus {
+  background: #ff6b00;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 767px) {
+  .logo {
+    display: block;
+    margin: 0 auto 0.75rem;
+  }
+
+  .sort {
+    justify-content: flex-start;
+  }
+
+  .restaurant-card {
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .restaurant-image {
+    width: 132px;
+    height: 104px;
+  }
+
+  .restaurant-name {
+    font-size: 1.15rem;
+  }
+
+  .ai-insights-box {
+    width: 100%;
+  }
 }
