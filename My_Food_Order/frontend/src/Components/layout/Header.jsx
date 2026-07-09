@@ -65,9 +65,7 @@ const Header = () => {
             <Link to="/users/login" className="material-symbols-outlined web_logo">
               account_circle
             </Link>
-          )}
-            
-         
+          )}            
         </div>
       </nav>
     </>
