@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIndianRupeeSign } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   addItemToCart,
   deleteCartItem,
   updateCartItemQuantity,
 } from "../redux/actions/cartActions";
+import { getMenus } from "../redux/actions/menuActions";
+import api from "../utils/api";
 
 const Fooditem = ({ fooditem, restaurant }) => {
+  const { user } = useSelector((state) => state.auth || {});
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
   const [showButtons, setShowButtons] = useState(false);
@@ -49,24 +54,51 @@ const Fooditem = ({ fooditem, restaurant }) => {
     }
   };
 
+  const handleDelete = async () => {
+    if (window.confirm(`Are you sure you want to delete ${fooditem.name}?`)) {
+      try {
+        await api.delete(`/v1/eats/item/${fooditem._id}`);
+        toast.success("Food item deleted successfully");
+        dispatch(getMenus(restaurant));
+      } catch (err) {
+        toast.error(err.response?.data?.message || err.message || "Failed to delete item");
+      }
+    }
+  };
+
   return (
-    <div className="col-sm-12 col-md-6 col-lg-3 my-3">
-      <div className="card p-3 rounded">
+    <div className="col-sm-12 col-md-6 col-lg-4 mb-3">
+      <div className="menu-card">
         <img
-          className="card-img-top mx-auto food-image"
-          src={fooditem.images?.[0]?.url || "/images/placeholder.png"}
-          alt={fooditem.name}
+            className="menu-image"
+            src={fooditem.images?.[0]?.url || "/images/template.jpeg"}
+            alt={fooditem.name}
+            onError={(e)=>{
+                e.target.src="/images/template.jpeg";
+            }}
         />
 
-        <div className="card-body d-flex flex-column">
+        <div className="menu-content">
           <h5 className="card-title">{fooditem.name}</h5>
 
-          <p className="fooditem_des">{fooditem.description}</p>
+          <p className="menu-description">{fooditem.description}</p>
 
-          <p className="card-text">
+          {/* <p className="card-text">
             <FontAwesomeIcon icon={faIndianRupeeSign} size="xs" />
             {fooditem.price}
-          </p>
+          </p> */}
+
+          <div className="price-stock-row">
+
+            <span className="menu-price">
+                ₹{fooditem.price}
+            </span>
+
+            <span className={fooditem.stock > 0 ? "stock-pill available" : "stock-pill unavailable"}>
+                {fooditem.stock > 0 ? "In Stock" : "Out of Stock"}
+            </span>
+
+          </div>
 
           {/*BUTTON LOGIC */}
           {!showButtons ? (
@@ -77,7 +109,7 @@ const Fooditem = ({ fooditem, restaurant }) => {
               disabled={fooditem.stock === 0}
               onClick={addToCartHandler}
             >
-              Add to Cart
+              🛒 Add
             </button>
           ) : (
             <div className="stockCounter d-flex align-items-center mt-2">
@@ -105,18 +137,23 @@ const Fooditem = ({ fooditem, restaurant }) => {
             </div>
           )}
 
-          <hr />
+          {user?.role === "admin" && (
+            <div className="admin-actions d-flex gap-2 mt-3 pt-2 border-top">
+              <Link to={`/admin/restaurant/${restaurant}/menu/edit-item/${fooditem._id}`} className="btn btn-warning btn-sm me-2" style={{ marginRight: "10px" }}>
+                ✏️ Edit Item
+              </Link>
+              <button className="btn btn-danger btn-sm" onClick={handleDelete}>
+                🗑️ Delete Item
+              </button>
+            </div>
+          )}
+
+          {/* <hr />
 
           <p>
             Status:{" "}
-            <span
-              className={
-                fooditem.stock > 0 ? "greenColor" : "redColor"
-              }
-            >
-              {fooditem.stock > 0 ? "In Stock" : "Out of Stock"}
-            </span>
-          </p>
+            
+          </p> */}
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@ import Loader from "./layout/Loader";
 import Message from "./Message";
 import { useDispatch, useSelector } from "react-redux";
 // import CountRestaurant from "./CountRestaurant";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -23,6 +23,8 @@ const Home = () => {
     error: restaurantsError,
     showVegOnly,
   } = useSelector((state) => state.restaurants);
+
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(getRestaurants(keyword));
@@ -54,6 +56,14 @@ const Home = () => {
               <h1>🍔 <span>Delicious Food</span> Delivered Fast</h1>
               <p>Order from your favorite restaurants in minutes.</p>
             </div>
+
+            {user?.role === "admin" && (
+              <div className="d-flex justify-content-end mb-4 px-3">
+                <Link to="/admin/restaurant/new" className="btn btn-success btn-lg shadow-sm" style={{ borderRadius: "10px" }}>
+                  ➕ Add New Restaurant
+                </Link>
+              </div>
+            )}
 
             {/* SORT BUTTONS */}
             <div className="sort">

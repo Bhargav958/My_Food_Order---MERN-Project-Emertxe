@@ -11,21 +11,36 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 // Create a new order   =>  /api/v1/order/new
 exports.newOrder = catchAsyncErrors(async (req, res, next) => {
-  const { session_id, items = [], restaurant } = req.body;
+  console.log("BODY =", req.body);
 
-  const session = await stripe.checkout.sessions.retrieve(session_id, {
-    expand: ["customer"],
+  const { session_id, items = [], restaurant } = req.body;
+  console.log("session_id =", session_id);
+
+  const session = await stripe.checkout.sessions.retrieve(session_id,{
+      expand:["customer"],
   });
 
-  let cart = await Cart.findOne({ user: req.user._id })
-    .populate({
-      path: "items.foodItem",
-      select: "name price images",
-    })
-    .populate({
-      path: "restaurant",
-      select: "name",
-    });
+  console.log("SESSION FOUND");
+
+  console.log(session);
+
+  console.log("shipping_cost =", session.shipping_cost);
+
+  let cart = await Cart.findOne({
+      user:req.user._id
+  })
+  .populate({
+      path:"items.foodItem",
+      select:"name price images"
+  })
+  .populate({
+      path:"restaurant",
+      select:"name"
+  });
+
+  console.log("CART =", cart);
+
+  console.log("Reached before Order.create()");
 
   const cartItems = cart?.items?.length
     ? cart.items.map((item) => ({
@@ -67,20 +82,21 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     orderItems,
     deliveryInfo,
     paymentInfo,
-    deliveryCharge: +session.shipping_cost.amount_subtotal / 100,
+    deliveryCharge: session.shipping_cost ? session.shipping_cost.amount_subtotal / 100 : 0,
     itemsPrice: +session.amount_subtotal / 100,
     finalTotal: +session.amount_total / 100,
     user: req.user.id,
     restaurant: cart?.restaurant?._id || restaurant,
     paidAt: Date.now(),
   });
-
+  console.log("Order created successfully");
   await Cart.findOneAndDelete({ user: req.user._id });
 
   res.status(200).json({
     success: true,
     order,
   });
+  
 });
 
 // Get single order   =>   /api/v1/orders/:id

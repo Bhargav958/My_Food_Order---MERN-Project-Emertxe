@@ -13,6 +13,10 @@ import{
     deleteRestaurantSuccess,
     deleteRestaurantFail,
 
+    updateRestaurantRequest,
+    updateRestaurantSuccess,
+    updateRestaurantFail,
+
 } from "../slices/restaurantSlice"
 
 //get
@@ -48,6 +52,21 @@ export const createRestaurant = (restaurantData) => async(dispatch)=>{
     }
 }
 
+//update
+export const updateRestaurant = (id, restaurantData) => async(dispatch)=>{
+    try{
+       dispatch(updateRestaurantRequest())
+
+       const {data} = await api.patch(`/v1/eats/stores/${id}`, restaurantData);
+
+       dispatch(updateRestaurantSuccess(data.data));
+
+    }
+    catch(error){
+     dispatch(updateRestaurantFail(error.response?.data?.message || error.message))
+    }
+}
+
 //delete
 export const deleteRestaurant = (id) => async(dispatch)=>{
     try{
@@ -62,3 +81,26 @@ export const deleteRestaurant = (id) => async(dispatch)=>{
      dispatch(deleteRestaurantFail(error.response?.data?.message || error.message))
     }
 }
+
+//for printing the order details after successful completion
+export const getOrderDetails = (id) => async (dispatch) => {
+    try {
+
+        dispatch({ type: "ORDER_DETAILS_REQUEST" });
+
+        const { data } = await api.get(`/v1/orders/${id}`);
+
+        dispatch({
+            type: "ORDER_DETAILS_SUCCESS",
+            payload: data.order,
+        });
+
+    } catch (error) {
+
+        dispatch({
+            type: "ORDER_DETAILS_FAIL",
+            payload: error.response?.data?.message,
+        });
+
+    }
+};

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteRestaurant } from "../redux/actions/restaurantAction";
 
 
 const Restaurant = ({ restaurant }) => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth || {});
   const [showAI, setShowAI] = useState(false);
   const rating = Number(restaurant.ratings || 0).toFixed(1);
   const reviewCount = restaurant.numOfReviews || 0;
@@ -22,23 +26,11 @@ const Restaurant = ({ restaurant }) => {
       .slice(-2)
       .join(", ");
 
-  // const { isAuthenticated, user } = useSelector(
-  //   (state) => state.auth || {}
-  // );
-
-  // const handleDelete = () => {
-  //   if (!window.confirm("Delete this restaurant?")) return;
-
-  //   dispatch(deleteRestaurant(restaurant._id))
-  //     .unwrap()
-  //     .then(() => {
-  //       // optional: refetch (not needed since we updated state already)
-  //       // dispatch(getRestaurants());
-  //     })
-  //     .catch((err) => {
-  //       alert(err || "Unable to delete");
-  //     });
-  // };
+  const handleDelete = () => {
+    if (window.confirm("Are you sure you want to delete this restaurant?")) {
+      dispatch(deleteRestaurant(restaurant._id));
+    }
+  };
 
   return (
     <div className="col-12 my-3">
@@ -72,6 +64,17 @@ const Restaurant = ({ restaurant }) => {
       <p className="rest_address">
         📍 {location}
       </p>
+    )}
+
+    {user?.role === "admin" && (
+      <div className="admin-actions mt-2 mb-3">
+        <Link to={`/admin/restaurant/edit/${restaurant._id}`} className="btn btn-warning btn-sm me-2" style={{ marginRight: "10px" }}>
+          ✏️ Edit
+        </Link>
+        <button className="btn btn-danger btn-sm" onClick={handleDelete}>
+          🗑️ Delete
+        </button>
+      </div>
     )}
 
     {restaurant.reviewSentiment && (

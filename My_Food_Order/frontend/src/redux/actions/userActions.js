@@ -48,6 +48,25 @@ export const loadUser = () => async (dispatch) => {
   }
 };
 
+export const updateProfile = (name) => async (dispatch) => {
+  try {
+    dispatch(authRequest());
+
+    await api.put("/v1/users/me/update", {
+      name,
+    });
+
+    const { data } = await api.get("/v1/users/me");
+
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    dispatch(profileSuccess(data.user));
+
+  } catch (error) {
+    dispatch(authFail(error.response?.data?.message || error.message));
+  }
+};
+
 export const logout = () => async (dispatch) => {
   try {
     await api.get("/v1/users/logout");

@@ -18,9 +18,34 @@ const OrderSuccess = () => {
     }
   }, [cartItems, dispatch, restaurant, sessionId, success]);
 
+  // useEffect(() => {
+  //   if (!sessionId || success) return;
+
+  //   dispatch(
+  //     createOrder({
+  //       sessionId,
+  //       cartItems,
+  //       restaurant,
+  //    })
+  //   );
+  // }, [dispatch, sessionId, success]);
+
+  console.log(
+  "loading:",
+  loading,
+  "success:",
+  success,
+  "order:",
+  order
+);
+
   if (loading) {
     return <Loader />;
   }
+
+useEffect(() => {
+  console.log("OrderSuccess mounted");
+}, []);
 
   return (
     <div className="container mt-5 text-center bg-white rounded p-5">

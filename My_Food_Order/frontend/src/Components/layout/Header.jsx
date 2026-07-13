@@ -50,8 +50,8 @@ const Header = () => {
           </Link>
           {isAuthenticated ? (
             <>
-              <Link to="/orders/me" className="ml-3 text-white">
-                {user?.name?.split(" ")[0] || "Orders"}
+              <Link to="/profile" className="ml-3 text-white">
+                {user?.name?.split(" ")[0]}
               </Link>
               <button
                 type="button"

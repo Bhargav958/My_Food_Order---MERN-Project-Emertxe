@@ -25,13 +25,20 @@
 
 const ErrorHandler = require("../utils/errorHandler");
 
+
 module.exports = (err, req, res, next) => {
+
+    
+console.error("========== ERROR ==========");
+console.error(err);
+console.error(err.stack);
+
   // if statusCode does not exist then 500 will be taken as error code ->internal server error
   err.statusCode = err.statusCode || 500;
 
   if (process.env.NODE_ENV === "DEVELOPMENT") {
     res.status(err.statusCode).json({
-      success: false,
+      success: false, 
       error: err,
       errMessage: err.message,
       stack: err.stack,

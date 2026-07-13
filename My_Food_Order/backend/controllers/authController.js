@@ -100,6 +100,8 @@ if (!currentUser) {
       )
     );
   }
+  console.log("Logged in user:", currentUser.email);  
+  console.log("Role:", currentUser.role);
 
   req.user = currentUser;
 
@@ -154,7 +156,7 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     email: req.body.email,
   };
 
-  if (req.body.avatar !== "") {
+  if (req.body.avatar && req.body.avatar !== "") {
 
     const user = await User.findById(req.user.id);
 
@@ -174,13 +176,18 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     };
   }
 
-  await User.findByIdAndUpdate(req.user.id, newUserData, {
-    new: true,
-    runValidators: true,
-  });
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    newUserData,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   res.status(200).json({
     success: true,
+    user,
   });
 
 });

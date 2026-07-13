@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getMenus } from "../redux/actions/menuActions";
 import Fooditem from "./Fooditem";
 import Loader from "./layout/Loader";
@@ -11,6 +11,7 @@ const Menu = () => {
   const dispatch = useDispatch();
 
   const { menus, loading, error } = useSelector((state) => state.menus);
+  const { user } = useSelector((state) => state.auth || {});
 
   useEffect(() => {
     dispatch(getMenus(id));
@@ -18,6 +19,13 @@ const Menu = () => {
 
   return (
     <div className="container mt-4">
+      {user?.role === "admin" && (
+        <div className="d-flex justify-content-end mb-3">
+          <Link to={`/admin/restaurant/${id}/menu/new-item`} className="btn btn-success shadow-sm" style={{ borderRadius: "10px" }}>
+            ➕ Add Food Item / Category
+          </Link>
+        </div>
+      )}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -26,7 +34,11 @@ const Menu = () => {
         menus.map((menu) => (
           <div key={menu._id} className="mb-4">
             <div className="d-flex align-items-center">
-              <h2 className="mr-2">{menu.category}</h2>
+              <div className="menu-category">
+                <div className="category-line"></div>
+                <h2>{menu.category}</h2>
+                <div className="category-line"></div>
+              </div>
             </div>
 
             <hr />

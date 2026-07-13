@@ -11,7 +11,9 @@ const initialState ={
     creating:false,
     createError:null,
     deleting:false,
-    deleteError:null
+    deleteError:null,
+    updating:false,
+    updateError:null
 }
 
 const restaurantSlice= createSlice({
@@ -64,6 +66,21 @@ const restaurantSlice= createSlice({
             state.deleteError = action.payload
         },
 
+        //update
+        updateRestaurantRequest:(state)=>{
+            state.updating=true
+        },
+        updateRestaurantSuccess:(state,action)=>{
+            state.updating=false,
+            state.restaurants = state.restaurants.map((restaurant) =>
+                restaurant._id === action.payload._id ? action.payload : restaurant
+            );
+        },
+        updateRestaurantFail:(state,action)=>{
+            state.updating=false,
+            state.updateError = action.payload
+        },
+
         //sort by ratings
         sortByRatings:(state)=>{
             state.restaurants.sort((a,b)=> b.ratings- a.ratings)
@@ -98,10 +115,13 @@ export const {
     deleteRestaurantSuccess,
     deleteRestaurantFail,
 
+    updateRestaurantRequest,
+    updateRestaurantSuccess,
+    updateRestaurantFail,
+
     sortByRatings,
     sortByReviews,
     toggleVegOnly,
     clearError
 } =restaurantSlice.actions
-
 export default restaurantSlice.reducer

@@ -31,6 +31,10 @@ const orderSlice = createSlice({
       state.loading = false;
       state.orders = action.payload;
     },
+    orderDetailsSuccess: (state, action) => {
+      state.loading = false;
+      state.order = action.payload;
+    },
     orderFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
@@ -50,6 +54,7 @@ export const {
   paymentSuccess,
   createOrderSuccess,
   ordersSuccess,
+  orderDetailsSuccess,
   orderFail,
   clearOrderError,
   resetOrderSuccess,

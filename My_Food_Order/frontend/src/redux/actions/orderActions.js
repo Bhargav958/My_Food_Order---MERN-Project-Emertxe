@@ -5,8 +5,10 @@ import {
   createOrderSuccess,
   ordersSuccess,
   orderFail,
+  orderDetailsSuccess
 } from "../slices/orderSlice";
 import { clearCart } from "../slices/cartSlice";
+
 
 const toApiItems = (cartItems) =>
   cartItems.map((item) => ({
@@ -30,22 +32,26 @@ export const processPayment = (cartItems) => async (dispatch) => {
   }
 };
 
-export const createOrder = ({ sessionId, cartItems, restaurant }) => async (dispatch) => {
-  try {
-    dispatch(orderRequest());
+export const createOrder =({ sessionId, cartItems, restaurant }) =>
+  async (dispatch) => {
+    try {
+      dispatch(orderRequest());
 
-    const { data } = await api.post("/v1/eats/orders/new", {
-      session_id: sessionId,
-      items: toApiItems(cartItems),
-      restaurant,
-    });
+      const { data } = await api.post("/v1/eats/orders/new", {
+        session_id: sessionId,
+        items: toApiItems(cartItems),
+        restaurant,
+      });
 
-    dispatch(createOrderSuccess(data.order));
-    dispatch(clearCart());
-  } catch (error) {
-    dispatch(orderFail(error.response?.data?.message || error.message));
-  }
-};
+      dispatch(createOrderSuccess(data.order));
+      dispatch(clearCart());
+
+      return data.order;   // <-- ADD THIS
+    } catch (error) {
+      dispatch(orderFail(error.response?.data?.message || error.message));
+      throw error;         // <-- ADD THIS
+    }
+  };
 
 export const getMyOrders = () => async (dispatch) => {
   try {
@@ -53,6 +59,18 @@ export const getMyOrders = () => async (dispatch) => {
 
     const { data } = await api.get("/v1/eats/orders/me/myOrders");
     dispatch(ordersSuccess(data.orders));
+  } catch (error) {
+    dispatch(orderFail(error.response?.data?.message || error.message));
+  }
+};
+
+export const getOrderDetails = (id) => async (dispatch) => {
+  try {
+    dispatch(orderRequest());
+
+    const { data } = await api.get(`/v1/eats/orders/${id}`);
+
+    dispatch(orderDetailsSuccess(data.order));
   } catch (error) {
     dispatch(orderFail(error.response?.data?.message || error.message));
   }

@@ -1,4 +1,3 @@
-const Errorhandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors")
 const APIFeatures = require("../utils/apiFeatures")
 const Restaurant = require("../models/restaurant");
@@ -29,8 +28,28 @@ exports.getRestaurant = catchAsyncErrors(async(req,res,next)=>{
     })
 })
 
-//update
+//update restaurant
+exports.updateRestaurant = catchAsyncErrors(async (req, res, next) => {
+  const restaurant = await Restaurant.findByIdAndUpdate(
+    req.params.storeId,
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
+  if (!restaurant) {
+    return next(new ErrorHandler("No document found with that ID", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: restaurant,
+  });
+});
+
+//create restaurant
 exports.createRestaurant = catchAsyncErrors(async (req, res, next) => {
   const restaurant = await Restaurant.create(req.body);
   res.status(201).json({
@@ -39,6 +58,7 @@ exports.createRestaurant = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+//delete restaurant
 exports.deleteRestaurant = catchAsyncErrors(async (req, res, next) => {
   const restaurant = await Restaurant.findByIdAndDelete(req.params.storeId);
 

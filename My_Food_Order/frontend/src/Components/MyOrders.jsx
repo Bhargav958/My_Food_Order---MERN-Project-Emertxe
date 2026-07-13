@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMyOrders } from "../redux/actions/orderActions";
 import Loader from "./layout/Loader";
 import Message from "./Message";
+import { Link } from "react-router-dom";
 
 const MyOrders = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,8 @@ const MyOrders = () => {
             <tbody>
               {orders.map((order) => (
                 <tr key={order._id}>
-                  <td>{order._id}</td>
+                  {/* <td>{order._id}</td> */}
+                  <td><Link to={`/orders/${order._id}`}> {order._id} </Link></td>
                   <td>{order.orderItems?.length || 0}</td>
                   <td>₹{order.finalTotal}</td>
                   <td>{order.orderStatus}</td>

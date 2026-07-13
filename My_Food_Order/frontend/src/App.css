@@ -5,9 +5,15 @@ body {
   min-height: 100%;
   margin: 0px;
   padding: 0px;
+  padding-top:90px;
   overflow-x: hidden;
   color: #1f1f1f;
-  background: #1f1f1f;
+  /* background: #1f1f1f; */
+  background-image: url("/images/backy.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
 }
 
 body::before,
@@ -18,7 +24,15 @@ body::after {
   pointer-events: none;
 }
 
-body::before {
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    pointer-events:none;
+}
+
+/* body::before {
   background-image: url("/images/backy.jpeg");
   background-position: center;
   background-repeat: no-repeat;
@@ -27,7 +41,8 @@ body::before {
   opacity: 0.1;
   transform: scale(1.06);
   z-index: -2;
-}
+} */
+
 
 body::after {
   background: rgba(0, 0, 0, 0.35);
@@ -1269,4 +1284,142 @@ ul.CTAs a {
   .ai-insights-box {
     width: 100%;
   }
+}
+
+
+/* for menu items ui */
+.menu-card{
+    background:#fff;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 14px 35px rgba(0,0,0,.15);
+    transition:.25s;
+    height:100%;
+}
+
+.menu-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 22px 45px rgba(0,0,0,.22);
+}
+
+.menu-image{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.menu-content{
+    padding:18px;
+}
+
+.menu-content h5{
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.menu-price{
+    color:#ff6b00;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.price-stock-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:15px 0;
+}
+
+.stock-pill{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.available{
+    background:#dff6e4;
+    color:#14833b;
+}
+
+.unavailable{
+    background:#ffe5e5;
+    color:#d11a2a;
+}
+
+.menu-description{
+    min-height:48px;
+    max-height:48px;
+    overflow:hidden;
+}
+
+.menu-image{
+    transition:.3s;
+}
+
+.menu-card:hover .menu-image{
+    transform:scale(1.05);
+}
+
+.category-title{
+    color:white;
+    font-size:42px;
+    font-weight:800;
+    margin-bottom:25px;
+}
+
+.menu-category{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    margin:45px 0 35px;
+}
+
+.category-line{
+    flex:1;
+    height:2px;
+    background:linear-gradient(
+        to right,
+        transparent,
+        #ff6b00,
+        transparent
+    );
+}
+
+.menu-category h2{
+    margin:0;
+    color:white;
+    font-size:2.2rem;
+    font-weight:800;
+    letter-spacing:1px;
+    text-shadow:none;
+}
+
+.navbar{
+    position: fixed;
+    top:0;
+    width:100%;
+    z-index:1000;
+}
+
+.scrollTopBtn {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 55px;
+  height: 55px;
+  border: none;
+  border-radius: 50%;
+  background: #ff6b00;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.scrollTopBtn:hover {
+  transform: translateY(-4px);
+  background: #e65c00;
 }
